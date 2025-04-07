@@ -15,117 +15,156 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['veg_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Market</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 16px;
-            background-color: #f5f5f5;
-        }
+   /* Typography */
+body {
+  font-family: 'Poppins', sans-serif; /* Change font to Poppins */
+  margin: 0;
+  padding: 20px; /* Increase padding */
+  background: #f4f4f4; /* Change background color */
+}
 
-        h1, h2 {
-            text-align: center;
-            margin-bottom: 24px;
-        }
+h1,
+h2 {
+  text-align: center;
+  margin-bottom: 30px; /* Increase margin */
+  color: #333; /* Change color */
+  font-weight: 600; /* Change font weight */
+}
 
-        .products {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            justify-content: center;
-        }
+/* Products Styling */
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px; /* Increase gap */
+  justify-content: center;
+}
 
-        .product {
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            width: 220px;
-            padding: 16px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+.product {
+  background: #fff; /* Change background color */
+  border-radius: 15px; /* Increase radius */
+  width: 300px; /* Increase width */
+  padding: 25px; /* Increase padding */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Change box shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-        .product img {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
-            margin-bottom: 12px;
-        }
+.product:hover {
+  transform: translateY(-8px); /* Increase translation */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Change box shadow */
+}
 
-        .product h5 {
-            margin: 0 0 8px;
-            font-size: 18px;
-        }
+.product img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px; /* Increase radius */
+  margin-bottom: 15px; /* Increase margin */
+}
 
-        .product p {
-            margin: 0 0 12px;
-            color: #555;
-        }
+.product h5 {
+  font-size: 24px; /* Increase font size */
+  margin-bottom: 10px; /* Decrease margin */
+  color: #333; /* Change color */
+}
 
-        .product input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
+.product p {
+  margin-bottom: 15px; /* Increase margin */
+  font-weight: 500; /* Change font weight */
+  color: #ff5722; /* Change color */
+}
 
-        .product button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+/* Inputs & Buttons */
+.product input[type="number"] {
+  width: 100%;
+  padding: 12px; /* Increase padding */
+  margin-bottom: 15px; /* Increase margin */
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Increase radius */
+  box-sizing: border-box;
+}
 
-        .product button:hover {
-            background-color: #218838;
-        }
+.product button {
+  width: 100%;
+  padding: 16px; /* Increase padding */
+  background: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 10px; /* Increase radius */
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 18px; /* Increase font size */
+  transition: background 0.3s ease;
+}
 
-        .cart {
-            margin-top: 40px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+.product button:hover {
+  background: #e64a19;
+}
 
-        .cart ul {
-            list-style: none;
-            padding: 0;
-        }
+/* Shopping Cart */
+.cart {
+  margin-top: 50px; /* Increase margin */
+  background: #fff; /* Change background color */
+  padding: 30px; /* Increase padding */
+  border-radius: 15px; /* Increase radius */
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Change box shadow */
+}
 
-        .cart li {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
+.cart ul {
+  list-style: none;
+  padding: 0;
+}
 
-        .cart h4 {
-            margin-top: 20px;
-        }
+.cart li {
+  padding: 16px; /* Increase padding */
+  border-bottom: 1px solid #ddd;
+  font-weight: 500;
+}
 
-        .cart button {
-            margin-top: 16px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+.cart h4 {
+  margin-top: 25px; /* Increase margin */
+  font-weight: bold;
+}
 
-        .cart button:hover {
-            background-color: #0056b3;
-        }
+.cart button {
+  margin-top: 20px; /* Increase margin */
+  padding: 16px; /* Increase padding */
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px; /* Increase radius */
+  cursor: pointer;
+  font-size: 18px; /* Increase font size */
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.cart button:hover {
+  background: #0056b3;
+}
+
+/* Shopping Cart Icon */
+.cart-icon {
+  position: fixed;
+  top: 20px; /* Increase top position */
+  right: 20px; /* Increase right position */
+  background: #ff5722;
+  color: white;
+  padding: 14px; /* Increase padding */
+  border-radius: 50%;
+  font-size: 22px; /* Increase font size */
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
     </style>
 </head>
 
 <body>
+    <div class="cart-icon">🛒 <?php echo array_sum($_SESSION['cart'] ?? []); ?></div>
+    
     <h1>Vegetables</h1>
     <div class="products">
         <?php
@@ -162,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['veg_id'])) {
             echo "<p>Your cart is empty.</p>";
         }
         ?>
-        <form action="checkout2.php">
+        <form action="payout.php">
             <button type="submit">Checkout</button>
         </form>
     </div>
