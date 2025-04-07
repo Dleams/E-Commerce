@@ -1,11 +1,23 @@
 <?php
 session_start();
-$conn = new mysqli("localhost", "root", "", "mkrn") or die("Connection Failed: " . $conn->connect_error);
+$conn = new mysqli("localhost", "root", "", "mkrn") or die("Connection Failed: " . $conn->connect_error);  /*This line connects your PHP to your MySQL database.
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['veg_id'])) {
-    $_SESSION['cart'][$_POST['veg_id']] = ($_SESSION['cart'][$_POST['veg_id']] ?? 0) + max(1, (int)$_POST['quantity']);
-    header("Location: " . $_SERVER['PHP_SELF']);
-    exit();
+"localhost" – your server is running locally (XAMPP).
+
+"root" – default username for XAMPP.
+
+"" – empty password (XAMPP has no password by default).
+
+"mkrn" – the name of your database (from your .sql file).
+
+If the connection fails, it shows “Connection Failed: [error message]”.*/
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['veg_id'])) { /*🔸 This checks if the form is submitted using POST and if veg_id is sent (when user clicks "Add to Cart").*/
+    $_SESSION['cart'][$_POST['veg_id']] = ($_SESSION['cart'][$_POST['veg_id']] ?? 0) + max(1, (int)$_POST['quantity']); /*🔸 Adds the vegetable to the cart session.
+🔸 ?? 0 checks if it exists; if not, it starts at 0.
+🔸 It adds the quantity (at least 1). max(1, ...) ensures the quantity is never below 1.*/
+    header("Location: " . $_SERVER['PHP_SELF']);  
+    exit(); /*🔸 After adding to cart, this refreshes the page to prevent re-submitting the form if the user reloads.*/
 }
 ?>
 <!DOCTYPE html>
@@ -166,8 +178,8 @@ h2 {
     <h1>Vegetables</h1>
     <div class="products">
         <?php
-        $result = $conn->query("SELECT * FROM products");
-        while ($row = $result->fetch_assoc()) {
+        $result = $conn->query("SELECT * FROM products"); //🔸 Gets all vegetable products from the products table.
+        while ($row = $result->fetch_assoc()) { //🔸 This goes through each row (each product) in the result.
             echo "<div class='product'>
                     <img src='images/{$row['image']}' alt='{$row['product_name']}'>
                     <h5>{$row['product_name']}</h5>
@@ -178,20 +190,28 @@ h2 {
                         <button type='submit'>Add to Cart</button>
                     </form>
                   </div>";
-        }
+        } /*🔸 This displays each product card:
+
+Product image.
+
+Product name and price.
+
+A form to add item to cart using hidden field veg_id and quantity input.
+
+*/
         ?>
     </div>
 
     <div class="cart">
         <h2>Shopping Cart</h2>
         <?php
-        $total_price = 0;
-        if (!empty($_SESSION['cart'])) {
+        $total_price = 0; //🔸 This variable stores the total amount to pay.
+        if (!empty($_SESSION['cart'])) { //🔸 Checks if the cart has at least one item.
             echo "<ul>";
             foreach ($_SESSION['cart'] as $id => $qty) {
                 if ($row = $conn->query("SELECT product_name, price FROM products WHERE id = $id")->fetch_assoc()) {
                     $total_price += $row['price'] * $qty;
-                    echo "<li>{$row['product_name']} - Qty: $qty - ₱" . number_format($row['price'] * $qty, 2) . "</li>";
+                    echo "<li>{$row['product_name']} - Qty: $qty - ₱" . number_format($row['price'] * $qty, 2) . "</li>"; //🔸 Displays each item in the cart with quantity and price 
                 }
             }
             echo "</ul><h4>Total: ₱" . number_format($total_price, 2) . "</h4>";
